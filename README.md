@@ -26,12 +26,12 @@
 ```$ git clone https://github.com/olxphilippines/athena-olxph.git```
 8. Run a bdd test<br>
 ```
-$ ./athena php bdd ../example-athena-test ../example-athena-test/athena.json --browser=firefox
+$ ./athena php bdd ../example-athena-test ../example-athena-test/athena.json --browser=chrome
   
   Executing specific test:
   add @tags
   
-$ ./athena php bdd ../example-athena-test ../example-athena-test/athena.json --browser=firefox --tags=@homepage
+$ ./athena php bdd ../example-athena-test ../example-athena-test/athena.json --browser=chrome --tags=@homepage
 
   parallel-run
   
