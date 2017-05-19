@@ -1,0 +1,17 @@
+# behat.yml
+default:
+    extensions:
+        Tonic\Behat\ParallelScenarioExtension: ~
+        Athena\Behat\BootstrapFileLoader:
+            bootstrap_path: "/opt/athena/bootstrap.php"
+
+        Athena\Event\Proxy\BehatProxyExtension: ~
+
+    suites:
+        Athena Functional Tests (BDD):
+            filters:
+             tags: ~@skipScenario
+            paths:
+                - %paths.base%/Bdd/feature
+            contexts:
+                - Tests\Bdd\context\homepageContext

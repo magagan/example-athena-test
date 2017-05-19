@@ -1,0 +1,29 @@
+{
+  "urls" : {
+    "/" : "http://demoqa.com",
+    "registration" : "/registration/"
+  },
+  "selenium" : {
+    "hub_url" : "http://athena-selenium-hub:4444/wd/hub",
+    "implicit_timeout" : 60,
+    "request_timeout" : 300,
+    "readTimeout": 9000,
+    "connectTimeout": 9000,
+    "connection_timeout": 90000,
+    "timeout": 90000,
+    "capabilities" : {
+      "unexpectedAlertBehaviour" : "accept",
+      "handlesAlerts" : "true"
+    },
+    "browser" : {
+      "capabilities" : {
+        "unexpectedAlertBehaviour" : "accept",
+        "handlesAlerts" : "true"
+      }
+    }
+  },
+  "report" : {
+    "format" : "html",
+    "outputDirectory" : "./Reports/bdd"
+  }
+}
