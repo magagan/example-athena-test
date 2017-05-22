@@ -1,7 +1,8 @@
 {
   "urls" : {
-    "/" : "http://demoqa.com",
-    "registration" : "/registration/"
+    "demoqa" : "http://demoqa.com",
+    "demoqa_reg" : "/registration/",
+    "sweetalert" : "http://t4t5.github.io/sweetalert/"
   },
   "selenium" : {
     "hub_url" : "http://athena-selenium-hub:4444/wd/hub",
