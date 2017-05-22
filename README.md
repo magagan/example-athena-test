@@ -18,7 +18,7 @@
 4. Start proxy plugin <br>
 <code>```$ athena proxy start``` </code>
 5. Start selenium-hub <br>
-<code>```$ athena selenium start hub <version>``` </code> ```ex. athena seleniu start hub 3.1```
+<code>```$ athena selenium start hub <version>``` </code> ```ex. athena selenium start hub 3.1```
 6. Start selenium-node multiple instances <br>
 <code>```$ athena selenium start chrome-debug <version> -p 6003-6004:5900 --instances=2``` <br>
 ```ex. athena selenium start chrome-debug 3.1 -p 6003-6004:5900 --instances=2```
@@ -64,4 +64,12 @@ $ athena php bdd <tests-directory> <config-file> [<options>...] [<behat-options>
    <li><b>PhantomJs Version</b> - <a href="https://hub.docker.com/r/akeem/selenium-node-phantomjs/tags/">Click Me!</a>
    <li><b>Selenium Hub and Nodes Version</b> - <a href="https://hub.docker.com/u/selenium/">Click Me!</a>
 
-For more documentation kindly visit this <a href="https://github.com/athena-oss/plugin-php/tree/master/docs"> Link! </a>
+For more documentation kindly visit this <a href="https://github.com/athena-oss/plugin-php/tree/master/docs"> Link! </a> <br>
+
+<b>Note:
+There is current issue in PHP plugin version v0.8.0, alternatively you can use the v0.8.1 that already in the master bracnh but not yet released. To do so, follow below commands.</b><br>
+```
+1. using terminal go to '/athena/plugins/' directory
+2. removed the "php" plugin
+3. at terminal enter "git clone -b 'v0.8.1' --single-branch https://github.com/athena-oss/plugin-php.git php"
+
