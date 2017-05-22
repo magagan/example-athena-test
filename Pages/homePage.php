@@ -24,14 +24,14 @@ class homePage extends AbstractPage
 
     public function __construct()
     {
-        parent::__construct(Athena::browser(), '/');
+        parent::__construct(Athena::browser(), 'demoqa');
     }
 
     /*
      * Open site url
      */
     public function openUrl() {
-        Athena::browser()->get('/');
+        Athena::browser()->get('demoqa');
         Athena::browser()->manage()->window()->maximize();
     }
 

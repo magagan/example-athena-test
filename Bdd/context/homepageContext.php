@@ -10,7 +10,6 @@
 namespace Tests\Bdd\context;
 
 use Athena\Test\AthenaTestContext;
-use Behat\Behat\Tester\Exception\PendingException;
 use Tests\Pages\homePage;
 use Tests\Pages\registrationPage;
 
@@ -29,7 +28,7 @@ class homepageContext extends AthenaTestContext
      */
     public function thatUserOpenHomepage()
     {
-        $this->homepage->openUrl("/");
+        $this->homepage->openUrl("demoqa");
     }
 
     /**
