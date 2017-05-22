@@ -72,4 +72,5 @@ There is current issue in PHP plugin version v0.8.0, alternatively you can use t
 1. using terminal go to '/athena/plugins/' directory
 2. removed the "php" plugin
 3. at terminal enter "git clone -b 'v0.8.1' --single-branch https://github.com/athena-oss/plugin-php.git php"
+```
 
