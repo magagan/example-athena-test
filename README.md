@@ -66,11 +66,3 @@ $ athena php bdd <tests-directory> <config-file> [<options>...] [<behat-options>
 
 For more documentation kindly visit this <a href="https://github.com/athena-oss/plugin-php/tree/master/docs"> Link! </a> <br>
 
-<b>Note:
-There is current issue in PHP plugin version v0.8.0, alternatively you can use the v0.8.1 that already in the master bracnh but not yet released. To do so, follow below commands.</b><br>
-```
-1. using terminal go to '/athena/plugins/' directory
-2. removed the "php" plugin
-3. at terminal enter "git clone -b 'v0.8.1' --single-branch https://github.com/athena-oss/plugin-php.git php"
-```
-
