@@ -23,7 +23,7 @@
 <code>```$ athena selenium start chrome-debug <version> -p 6003-6004:5900 --instances=2``` <br>
 ```ex. athena selenium start chrome-debug 3.1 -p 6003-6004:5900 --instances=2```
 7. Clone athena-olxph <br>
-```$ git clone https://github.com/mcgagan12/example-athena-test.git```
+```$ git clone https://github.com/magagan/example-athena-test.git```
 8. Run a bdd test<br>
 ```
 $ ./athena php bdd ../example-athena-test ../example-athena-test/athena.json --browser=chrome
