@@ -5,7 +5,7 @@ DIR=/home/ubuntu
 features=#Feature to be run (ex.HomePage-Listings-Details)
 featuretags=#tags to be executed
 ec2PublicIP=#public ip of ec2
-seleniumVersion=$(<$DIR/athena-example-tests/utils/seleniumVersion.txt)
+seleniumVersion=$(<$DIR/example-athena-tests/utils/seleniumVersion.txt)
 parallelism=4
 
 #start selenium hub and chrome nodes
@@ -14,21 +14,21 @@ $DIR/athena/athena selenium start chrome-debug $seleniumVersion --env DBUS_SESSI
 sleep 10s
 
 #copy files to selenium chrome docker container
-docker cp $DIR/athena-example-tests/imgs/playstation.jpeg athena-selenium-0-chrome-debug:/tmp/playstation.jpeg
-docker cp $DIR/athena-example-tests/imgs/playstation2.jpeg athena-selenium-0-chrome-debug:/tmp/playstation2.jpeg
-docker cp $DIR/athena-example-tests/imgs/playstation.jpeg athena-selenium-0-chrome-debug-1:/tmp/playstation.jpeg
-docker cp $DIR/athena-example-tests/imgs/playstation2.jpeg athena-selenium-0-chrome-debug-1:/tmp/playstation2.jpeg
+docker cp $DIR/example-athena-tests/imgs/playstation.jpeg athena-selenium-0-chrome-debug:/tmp/playstation.jpeg
+docker cp $DIR/example-athena-tests/imgs/playstation2.jpeg athena-selenium-0-chrome-debug:/tmp/playstation2.jpeg
+docker cp $DIR/example-athena-tests/imgs/playstation.jpeg athena-selenium-0-chrome-debug-1:/tmp/playstation.jpeg
+docker cp $DIR/example-athena-tests/imgs/playstation2.jpeg athena-selenium-0-chrome-debug-1:/tmp/playstation2.jpeg
 
-cd athena-example-tests/
+cd example-athena-tests/
 started=$(date +"%H:%M:%S")
 START_TIME=$SECONDS
-$DIR/athena/athena php --php-version=7.1 bdd $DIR/athena-example-tests $DIR/athena-example-tests/athena.bdd.prod.json --browser=chrome --tags=$featuretags --parallel-process=$parallelism --parallel-features=$parallelism --athena-no-logo --no-colors --rerun
+$DIR/athena/athena php --php-version=7.1 bdd $DIR/example-athena-tests $DIR/example-athena-tests/athena.bdd.prod.json --browser=chrome --tags=$featuretags --parallel-process=$parallelism --parallel-features=$parallelism --athena-no-logo --no-colors --rerun
 finish=$(date +"%H:%M:%S")
 ELAPSED_TIME=$(($SECONDS - $START_TIME))
 mkdir /opt/lampp/htdocs/daily_regression/results/$now-$features
 
 sleep 10s
-cp $DIR/athena-example-tests/Reports/bdd/* /opt/lampp/htdocs/daily_regression/results/$now-$features
+cp $DIR/example-athena-tests/Reports/bdd/* /opt/lampp/htdocs/daily_regression/results/$now-$features
 mv /opt/lampp/htdocs/daily_regression/results/$now-$features/report.html /opt/lampp/htdocs/daily_regression/results/$now-$features/index.html
 
 #clean-up test results images older than 2 days

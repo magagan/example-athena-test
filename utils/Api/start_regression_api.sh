@@ -4,15 +4,15 @@ DIR=/home/ubuntu
 ec2PublicIP=enter-public-ec2-ip
 #mkdir /opt/lampp/htdocs/daily_regression/results/$now
 
-#cd athena-example-tests/
+#cd example-athena-tests/
 started=$(date +"%H:%M:%S")
 START_TIME=$SECONDS
-$DIR/athena/athena php --php-version=7.1 api $DIR/athena-example-tests $DIR/athena-example-tests/athena.api-prod.json
+$DIR/athena/athena php --php-version=7.1 api $DIR/example-athena-tests $DIR/example-athena-tests/athena.api-prod.json
 finish=$(date +"%H:%M:%S")
 ELAPSED_TIME=$(($SECONDS - $START_TIME))
 mkdir /opt/lampp/htdocs/daily_regression/results/api/$now
 sleep 10s
-cp $DIR/athena-example-tests/Reports/api/* /opt/lampp/htdocs/daily_regression/results/api/$now
+cp $DIR/example-athena-tests/Reports/api/* /opt/lampp/htdocs/daily_regression/results/api/$now
 mv /opt/lampp/htdocs/daily_regression/results/api/$now/report.html /opt/lampp/htdocs/daily_regression/results/api/$now/index.html
 
 #clean-up test results images older than 60 days
