@@ -1,4 +1,10 @@
 # Athena BDD Test (Page-Object-Model)
+#### Pre-installed dependencies
+<ul>
+    <li> Git (refer to: https://tinyurl.com/k9spv9w)
+    <li> Docker (refer to: https://tinyurl.com/y6utrqrz)
+</ul>
+
 1. Clone athena repo: <br>
 ```$ git clone https://github.com/athena-oss/athena.git``` <br>
 2. run <code background-color="black">```$ ./athena init```</code> under athena project root dir to check if all dependencies is already installed <br>

@@ -24,8 +24,8 @@
     }
   },
   "report" : {
-    "format" : "html",
-    "outputDirectory" : "./Reports/bdd"
+    "format" : "cucumber",
+    "outputDirectory" : "./Reports/ci"
   },
   "bddScreenshotOnlyOnFailed" : true,
   "email": "example.email@example.com",
