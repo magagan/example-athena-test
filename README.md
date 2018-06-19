@@ -1,7 +1,10 @@
 # Athena BDD Test (Page-Object-Model)
 #### Pre-installed dependencies
+```$ sudo apt-get install git```
+<br>
+```$ sudo apt install docker.io```
 <ul>
-    <li> Git (refer to: https://tinyurl.com/k9spv9w)
+    <li> Git (refer to: https://tinyurl.com/k9spv9w) 
     <li> Docker (refer to: https://tinyurl.com/y6utrqrz)
 </ul>
 
