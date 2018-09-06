@@ -11,7 +11,8 @@ namespace Tests\Pages;
 use Athena\Athena;
 use Athena\Page\AbstractPage;
 
-class homePage extends AbstractPage
+
+class homePage extends BasePage
 {
     const ELEMENT_MAINCONTENT_CSS = 'div.entry-content';
     const ELEMENT_REGISTRATION_BUTTON_CSS = '#menu-registration li a';
@@ -21,11 +22,6 @@ class homePage extends AbstractPage
 
     const STRING_TAB_5 = 'Content 5 Title';
     const STRING_TAB_DESC = 'The content could contain anything text page or submit form or any other HTML objects.';
-
-    public function __construct()
-    {
-        parent::__construct(Athena::browser(), 'demoqa');
-    }
 
     /*
      * Open site url

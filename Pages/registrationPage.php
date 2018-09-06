@@ -11,7 +11,7 @@ namespace Tests\Pages;
 use Athena\Athena;
 use Athena\Page\AbstractPage;
 
-class registrationPage extends AbstractPage
+class registrationPage extends BasePage
 {
     #constant variable (be descriptive as possible)
     const ELEMENT_REG_FORM_ID = 'pie_register_reg_form';
@@ -24,11 +24,6 @@ class registrationPage extends AbstractPage
     const ELEMENT_HOBBY_DANCE_CSS = '';
     const ELEMENT_HOBBY_READING_CSS = '';
     const ELEMENT_HOBBY_CRICKET_CSS = '';
-
-    public function __construct()
-    {
-        parent::__construct(Athena::browser(), '/');
-    }
 
     /**
      * Verify main content of page exists

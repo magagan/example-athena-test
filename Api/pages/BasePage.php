@@ -52,10 +52,10 @@ class BasePage extends AthenaAPITestCase
     {
         $data = [
             'client_id' => 9,
-            'client_secret' => 'PhTbP3wTEP3MaHRsJZir',
-            'grant_type' => 'partner',
-            'partner_code' => 'qa_auto',
-            'partner_secret' => 'PhTbP3wTEP3MaHRsJZir'
+            'client_secret' => '<set_val>',
+            'grant_type' => '<set_val>',
+            'partner_code' => '<set_val>',
+            'partner_secret' => '<set_val>'
         ];
 
         $urls = Athena::settings()->get('urls')->orFail();

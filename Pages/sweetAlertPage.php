@@ -11,16 +11,11 @@ namespace Tests\Pages;
 use Athena\Athena;
 use Athena\Page\AbstractPage;
 
-class sweetAlertPage extends AbstractPage
+class sweetAlertPage extends BasePage
 {
     const ELEMENT_SWEET_ALERT_BTN_CSS = 'div.showcase.sweet button';
     const ELEMENT_SWEET_ALERT_LB_POPUP_CSS = 'div.sweet-alert.showSweetAlert.visible';
     const ELEMENT_SA_BTN_CONFIRM_CSS = 'div.sa-confirm-button-container button.confirm';
-
-    public function __construct()
-    {
-        parent::__construct(Athena::browser(), 'sweetAlert');
-    }
 
     /*
      * Open site url

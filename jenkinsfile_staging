@@ -1,0 +1,328 @@
+pipeline {
+    agent { label 'master' }
+
+    environment {
+
+        // Slack configuration
+        SLACK_COLOR_DANGER  = '#E01563'
+        SLACK_COLOR_INFO    = '#6ECADC'
+        SLACK_COLOR_WARNING = '#FFC300'
+        SLACK_COLOR_GOOD    = '#3EB991'
+
+    } // environment
+
+    stages {
+        stage('Preparing CI Env'){//preparing CI Test Environment
+            parallel {
+                stage ('Preparing Env reg-server01'){
+                    agent { label 'reg-server01' }
+                    steps {
+                        sh "utils/Bdd/prep_ci_env.sh" 
+                    }                    
+                }
+
+                stage ('Preparing Env reg-server02'){
+                    agent { label 'reg-server02' }
+                    steps {
+                        sh "utils/Bdd/prep_ci_env.sh" 
+                    }                    
+                }
+
+                stage ('Preparing Env reg-server03'){
+                    agent { label 'reg-server03' }
+                    steps {
+                        sh "utils/Bdd/prep_ci_env.sh" 
+                    }                    
+                }
+
+                stage ('Preparing Env reg-server04'){
+                    agent { label 'reg-server04' }
+                    steps {
+                        sh "utils/Bdd/prep_ci_env.sh" 
+                    }                    
+                }
+
+                stage ('Preparing Env reg-server05'){
+                    agent { label 'reg-server05' }
+                    steps {
+                        sh "utils/Bdd/prep_ci_env.sh" 
+                    }                    
+                }                                                                
+            }
+        }
+
+        stage('CI Testing') {
+            parallel { //parallel execution of tests
+                stage ('S-RS-01-HomePage-Listings-Details') {
+                    agent { label 'reg-server01' }
+                    steps {
+
+                        // get user that has started the build
+                        //wrap([$class: 'BuildUser']) { script { env.USER_ID = "${BUILD_USER_ID}" } }
+
+                        // first of all, notify the team
+                        slackSend (color: "${env.SLACK_COLOR_INFO}",
+                        //channel: "${params.SLACK_CHANNEL_1}",
+                        message: "*STARTED:* Job ${env.JOB_NAME} build #${env.BUILD_NUMBER}\n Features: <${env.BUILD_URL}|S-RS-01-HomePage-Listings-Details>\n More info at: <${env.BUILD_URL}|Open>")
+
+                        echo "Cleaning-up job workspace"
+                        deleteDir()
+
+                        git credentialsId: 'ff9f0344-288c-4b2e-afa0-01e23b3856b6', url: 'git@github.com:magagan/example-athena-test.git'
+                        sh "utils/Bdd/reg-server01/start_regression-ci-stag-html.sh"                        
+                    }
+
+                    post {
+
+                        failure {
+                            echo "Sending message to Slack"
+                            slackSend (color: "${env.SLACK_COLOR_DANGER}",
+                                    message: "*FAILED:* Job ${env.JOB_NAME} build #${env.BUILD_NUMBER}\n Features: <${env.BUILD_URL}|S-RS-01-HomePage-Listings-Details>\n More info at: <${env.BUILD_URL}|Open>")
+                        }                        
+                        
+                        aborted {
+                            echo "Sending message to Slack"
+                            slackSend (color: "${env.SLACK_COLOR_WARNING}",
+                                    message: "*ABORTED:* Job ${env.JOB_NAME} build #${env.BUILD_NUMBER}\n Features: <${env.BUILD_URL}|S-RS-01-HomePage-Listings-Details>\n More info at: <${env.BUILD_URL}|Open>")
+                        }
+
+                        success {
+                            echo "Sending message to Slack"
+                            slackSend (color: "${env.SLACK_COLOR_GOOD}",
+                                    message: "*SUCCESS:* Job ${env.JOB_NAME} build #${env.BUILD_NUMBER}\n Features: <${env.BUILD_URL}|S-RS-01-HomePage-Listings-Details>\n Duration: ${currentBuild.durationString.replace(' and counting', '')}\n More info at: <${env.BUILD_URL}|Open>")                            
+                        }
+
+                        always {
+                            publishHTML([allowMissing: false,
+                                alwaysLinkToLastBuild: false,
+                                keepAll: true,
+                                reportDir: 'Reports/html',
+                                reportFiles: 'report.html',
+                                reportName: 'S-RS-01-HomePage-Listings-Details',
+                                reportTitles: 'S-RS-01-HomePage-Listings-Details'
+                                ])
+
+                            cleanWs()
+                        }
+                    }
+                }
+
+                stage ('S-RS-02-Login-Registration-CategoryLinks') {
+                    agent { label 'reg-server02' }
+                    steps {
+
+                        // get user that has started the build
+                        //wrap([$class: 'BuildUser']) { script { env.USER_ID = "${BUILD_USER_ID}" } }
+
+                        // first of all, notify the team
+                        slackSend (color: "${env.SLACK_COLOR_INFO}",
+                        //channel: "${params.SLACK_CHANNEL_1}",
+                        message: "*STARTED:* Job ${env.JOB_NAME} build #${env.BUILD_NUMBER}\n Features: <${env.BUILD_URL}|S-RS-02-Login-Registration-CategoryLinks>\n More info at: <${env.BUILD_URL}|Open>")
+
+                        echo "Cleaning-up job workspace"
+                        deleteDir()
+
+                        git credentialsId: 'ff9f0344-288c-4b2e-afa0-01e23b3856b6', url: 'git@github.com:magagan/example-athena-test.git'
+                        sh "utils/Bdd/reg-server02/start_regression-ci-stag-html.sh"
+                    }
+
+                    post {
+
+                        failure {
+                            echo "Sending message to Slack"
+                            slackSend (color: "${env.SLACK_COLOR_DANGER}",
+                                    message: "*FAILED:* Job ${env.JOB_NAME} build #${env.BUILD_NUMBER}\n Features: <${env.BUILD_URL}|S-RS-01-HomePage-Listings-Details>\n More info at: <${env.BUILD_URL}|Open>")
+                        }                           
+
+                        aborted {
+                            echo "Sending message to Slack"
+                            slackSend (color: "${env.SLACK_COLOR_WARNING}",
+                                    message: "*ABORTED:* Job ${env.JOB_NAME} build #${env.BUILD_NUMBER}\n Features: <${env.BUILD_URL}|S-RS-02-Login-Registration-CategoryLinks>\n More info at: <${env.BUILD_URL}|Open>")
+                        }
+
+                        success {
+                            echo "Sending message to Slack"
+                            slackSend (color: "${env.SLACK_COLOR_GOOD}",
+                                    message: "*SUCCESS:* Job ${env.JOB_NAME} build #${env.BUILD_NUMBER}\n Features: <${env.BUILD_URL}|S-RS-02-Login-Registration-CategoryLinks>\n Duration: ${currentBuild.durationString.replace(' and counting', '')}\n More info at: <${env.BUILD_URL}|Open>")                            
+                        }
+
+                        always {
+                            publishHTML([allowMissing: false,
+                                alwaysLinkToLastBuild: false,
+                                keepAll: true,
+                                reportDir: 'Reports/html',
+                                reportFiles: 'report.html',
+                                reportName: 'S-RS-02-Login-Registration-CategoryLinks',
+                                reportTitles: 'S-RS-02-Login-Registration-CategoryLinks'
+                                ])
+
+                            cleanWs()
+                        }
+                    }
+                }
+
+                stage ('S-RS-03-TopUp-VasRefresh-AdBoostingPackage') {
+                    agent { label 'reg-server03' }
+                    steps {
+
+                        // get user that has started the build
+                        //wrap([$class: 'BuildUser']) { script { env.USER_ID = "${BUILD_USER_ID}" } }
+
+                        // first of all, notify the team
+                        slackSend (color: "${env.SLACK_COLOR_INFO}",
+                        //channel: "${params.SLACK_CHANNEL_1}",
+                        message: "*STARTED:* Job ${env.JOB_NAME} build #${env.BUILD_NUMBER}\n Features: <${env.BUILD_URL}|S-RS-03-TopUp-VasRefresh-AdBoostingPackage>\n More info at: <${env.BUILD_URL}|Open>")
+
+                        echo "Cleaning-up job workspace"
+                        deleteDir()
+
+                        git credentialsId: 'ff9f0344-288c-4b2e-afa0-01e23b3856b6', url: 'git@github.com:magagan/example-athena-test.git'
+                        sh "utils/Bdd/reg-server03/start_regression-ci-stag-html.sh"
+                    }
+
+                    post {
+
+                        failure {
+                            echo "Sending message to Slack"
+                            slackSend (color: "${env.SLACK_COLOR_DANGER}",
+                                    message: "*FAILED:* Job ${env.JOB_NAME} build #${env.BUILD_NUMBER}\n Features: <${env.BUILD_URL}|S-RS-01-HomePage-Listings-Details>\n More info at: <${env.BUILD_URL}|Open>")
+                        }                           
+
+                        aborted {
+                            echo "Sending message to Slack"
+                            slackSend (color: "${env.SLACK_COLOR_WARNING}",
+                                    message: "*ABORTED:* Job ${env.JOB_NAME} build #${env.BUILD_NUMBER}\n Features: <${env.BUILD_URL}|S-RS-03-TopUp-VasRefresh-AdBoostingPackage>\n More info at: <${env.BUILD_URL}|Open>")
+                        }
+
+                        success {
+                            echo "Sending message to Slack"
+                            slackSend (color: "${env.SLACK_COLOR_GOOD}",
+                                    message: "*SUCCESS:* Job ${env.JOB_NAME} build #${env.BUILD_NUMBER}\n Features: <${env.BUILD_URL}|S-RS-03-TopUp-VasRefresh-AdBoostingPackage>\n Duration: ${currentBuild.durationString.replace(' and counting', '')}\n More info at: <${env.BUILD_URL}|Open>")                            
+                        }
+
+                        always {
+                            publishHTML([allowMissing: false,
+                                alwaysLinkToLastBuild: false,
+                                keepAll: true,
+                                reportDir: 'Reports/html',
+                                reportFiles: 'report.html',
+                                reportName: 'S-RS-03-TopUp-VasRefresh-AdBoostingPackage',
+                                reportTitles: 'S-RS-03-TopUp-VasRefresh-AdBoostingPackage'
+                                ])
+
+                            cleanWs()
+                        }
+                    }
+                }
+
+                stage ('S-RS-04-AdSenseListing-AdsenseDetails-AudienceSegments-AdUnits') {
+                    agent { label 'reg-server04' }
+                    steps {
+
+                        // get user that has started the build
+                        //wrap([$class: 'BuildUser']) { script { env.USER_ID = "${BUILD_USER_ID}" } }
+
+                        // first of all, notify the team
+                        slackSend (color: "${env.SLACK_COLOR_INFO}",
+                        //channel: "${params.SLACK_CHANNEL_1}",
+                        message: "*STARTED:* Job ${env.JOB_NAME} build #${env.BUILD_NUMBER}\n Features: <${env.BUILD_URL}|S-RS-04-AdSenseListing-AdsenseDetails-AudienceSegments-AdUnits>\n More info at: <${env.BUILD_URL}|Open>")
+
+                        echo "Cleaning-up job workspace"
+                        deleteDir()
+
+                        git credentialsId: 'ff9f0344-288c-4b2e-afa0-01e23b3856b6', url: 'git@github.com:magagan/example-athena-test.git'
+                        sh "utils/Bdd/reg-server04/start_regression-ci-stag-html.sh"
+                    }
+
+                    post {
+
+                        failure {
+                            echo "Sending message to Slack"
+                            slackSend (color: "${env.SLACK_COLOR_DANGER}",
+                                    message: "*FAILED:* Job ${env.JOB_NAME} build #${env.BUILD_NUMBER}\n Features: <${env.BUILD_URL}|S-RS-01-HomePage-Listings-Details>\n More info at: <${env.BUILD_URL}|Open>")
+                        }                           
+
+                        aborted {
+                            echo "Sending message to Slack"
+                            slackSend (color: "${env.SLACK_COLOR_WARNING}",
+                                    message: "*ABORTED:* Job ${env.JOB_NAME} build #${env.BUILD_NUMBER}\n Features: <${env.BUILD_URL}|S-RS-04-AdSenseListing-AdsenseDetails-AudienceSegments-AdUnits>\n More info at: <${env.BUILD_URL}|Open>")
+                        }
+
+                        success {
+                            echo "Sending message to Slack"
+                            slackSend (color: "${env.SLACK_COLOR_GOOD}",
+                                    message: "*SUCCESS:* Job ${env.JOB_NAME} build #${env.BUILD_NUMBER}\n Features: <${env.BUILD_URL}|S-RS-04-AdSenseListing-AdsenseDetails-AudienceSegments-AdUnits>\n Duration: ${currentBuild.durationString.replace(' and counting', '')}\n More info at: <${env.BUILD_URL}|Open>")                            
+                        }
+
+                        always {
+                            publishHTML([allowMissing: false,
+                                alwaysLinkToLastBuild: false,
+                                keepAll: true,
+                                reportDir: 'Reports/html',
+                                reportFiles: 'report.html',
+                                reportName: 'S-RS-04-AdSenseListing-AdsenseDetails-AudienceSegments-AdUnits',
+                                reportTitles: 'S-RS-04-AdSenseListing-AdsenseDetails-AudienceSegments-AdUnits'
+                                ])
+
+                            cleanWs()
+                        }
+                    }
+                }
+
+                stage ('S-RS-05-SellForm') {
+                    agent { label 'reg-server05' }
+                    steps {
+
+                        // get user that has started the build
+                        //wrap([$class: 'BuildUser']) { script { env.USER_ID = "${BUILD_USER_ID}" } }
+
+                        // first of all, notify the team
+                        slackSend (color: "${env.SLACK_COLOR_INFO}",
+                        //channel: "${params.SLACK_CHANNEL_1}",
+                        message: "*STARTED:* Job ${env.JOB_NAME} build #${env.BUILD_NUMBER}\n Features: <${env.BUILD_URL}|S-RS-05-SellForm>\n More info at: <${env.BUILD_URL}|Open>")
+
+                        echo "Cleaning-up job workspace"
+                        deleteDir()
+
+                        git credentialsId: 'ff9f0344-288c-4b2e-afa0-01e23b3856b6', url: 'git@github.com:magagan/example-athena-test.git'
+                        sh "utils/Bdd/reg-server05/start_regression-ci-stag-html.sh"
+                    }
+
+                    post {
+
+                        failure {
+                            echo "Sending message to Slack"
+                            slackSend (color: "${env.SLACK_COLOR_DANGER}",
+                                    message: "*FAILED:* Job ${env.JOB_NAME} build #${env.BUILD_NUMBER}\n Features: <${env.BUILD_URL}|SellForm>\n More info at: <${env.BUILD_URL}|Open>")
+                        }                           
+
+                        aborted {
+                            echo "Sending message to Slack"
+                            slackSend (color: "${env.SLACK_COLOR_WARNING}",
+                                    message: "*ABORTED:* Job ${env.JOB_NAME} build #${env.BUILD_NUMBER}\n Features: <${env.BUILD_URL}|S-RS-05-SellForm>\n More info at: <${env.BUILD_URL}|Open>")
+                        }
+
+                        success {
+                            echo "Sending message to Slack"
+                            slackSend (color: "${env.SLACK_COLOR_GOOD}",
+                                    message: "*SUCCESS:* Job ${env.JOB_NAME} build #${env.BUILD_NUMBER}\n Features: <${env.BUILD_URL}|S-RS-05-SellForm>\n Duration: ${currentBuild.durationString.replace(' and counting', '')}\n More info at: <${env.BUILD_URL}|Open>")                            
+                        }
+
+                        always {
+                            publishHTML([allowMissing: false,
+                                alwaysLinkToLastBuild: false,
+                                keepAll: true,
+                                reportDir: 'Reports/html',
+                                reportFiles: 'report.html',
+                                reportName: 'S-RS-05-SellForm',
+                                reportTitles: 'S-RS-05-SellForm'
+                                ])
+
+                            cleanWs()
+                        }
+                    }
+                }              
+            }           
+        }
+    }
+}

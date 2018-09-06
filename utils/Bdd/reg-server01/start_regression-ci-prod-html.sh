@@ -1,0 +1,28 @@
+#!/bin/bash
+now=$(date +"%B-%d-%Y-%A-%I%P")
+HOME_DIR=/home/ubuntu
+# Feature names and tags
+features=Login-Registration-CategoryLinks
+featuretags=@login,@registration,@categorylink
+ec2PublicIP=13.229.86.229
+seleniumVersion=$(<$PWD/utils/seleniumVersion.txt)
+parallelism=6
+
+#start selenium hub and chrome nodes
+$HOME_DIR/athena/athena selenium start hub $seleniumVersion || true
+$HOME_DIR/athena/athena selenium start chrome-debug $seleniumVersion --env DBUS_SESSION_BUS_ADDRESS=/dev/null -v /dev/shm:/dev/shm -t -d -P --instances=$parallelism || true
+sleep 10s
+
+#copy images for testing sellform
+sudo docker cp imgs/playstation.jpeg athena-selenium-0-chrome-debug:/tmp/playstation.jpeg
+sudo docker cp imgs/playstation2.jpeg athena-selenium-0-chrome-debug:/tmp/playstation2.jpeg
+sudo docker cp imgs/playstation.jpeg athena-selenium-0-chrome-debug-1:/tmp/playstation.jpeg
+sudo docker cp imgs/playstation2.jpeg athena-selenium-0-chrome-debug-1:/tmp/playstation2.jpeg
+
+#run bdd feature tests
+$HOME_DIR/athena/athena php --php-version=7.1 bdd . athena.bdd.ci-prod-html.json --browser=chrome --tags=$featuretags --parallel-process=$parallelism --parallel-features=$parallelism --athena-no-logo --no-colors --rerun
+sleep 30s
+
+#stop selenium container
+$HOME_DIR/athena/athena selenium stop chrome-debug || true
+$HOME_DIR/athena/athena selenium stop hub || true
